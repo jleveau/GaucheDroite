@@ -22,8 +22,6 @@ pour afficher  ["jospin", "mergez", "Victor"]
 var command = process.argv[2]
 var command2 = process.argv[3]
 
-
-
 //On declare la fonction "degauche", qui prend en parametre "dequionparle"
 // On pourra la reutiliser avec degauche("toto"), ici dequionparle = "toto"
 function degauche(dequionparle){
