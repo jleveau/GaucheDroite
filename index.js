@@ -1,64 +1,105 @@
-var concepts = [
-    "jospin",
-    "mergez"
-]
-
-concepts.push("Victor", "Tifenn", "Julien")
-
 
 /*
-TODO
-AJouter un element dans la liste des sympatisants
-Pour cela, on pourra utiliser la fonction push.
-Par exemple en faisant : concepts.push(MonNouveauSympatisant)
+TODO : 
+*Bouton Droite qui diminue le score de 1 
 
-On veut pouvoir utiliser :
-node index ajouter Victor
-pour afficher  ["jospin", "mergez", "Victor"]
+*Mise en page
+Si le score est de gauche, le nom est ecrit en rouge
+Si le score est de droite, le nom est ecrit en bleu
+
 */
 
-//Permet de recuperer les variable en argument de la commande. 
-// example : node index jospin    <-- process.argv[0] = node, process.argv[1] = index,  process.argv[2] = jospin
-var command = process.argv[2]
-var command2 = process.argv[3]
+var concepts = [
+    {nom : "Lionel" , score : 1},
+    {nom : "Victor" , score : 1},
+    {nom : "Tifenn" , score : 1},
+    {nom : "Julien" , score : 1},
+]
 
-//On declare la fonction "degauche", qui prend en parametre "dequionparle"
-// On pourra la reutiliser avec degauche("toto"), ici dequionparle = "toto"
-function degauche(dequionparle){
-    for (var i = 0; i < concepts.length; i++) {
-        if(concepts[i] === dequionparle){
-            //Arrete la fonction, et retourne la valeur
-            return true 
-        }
+const conceptRepository = new ConceptRepository()
+
+//On va chercher les elements du HTML
+// # permet de recuperer les elements par leur id
+const newConceptButton = document.querySelector("#newConceptButton")
+const newConceptInput = document.querySelector("#newConceptInput")
+const listConcept = document.querySelector("#listConcept")
+
+// Quand click sur le bouton, on appelle la fonction nouveauSympatisant, 
+//comme si on faisait : nouveauSympatisant()
+newConceptButton.addEventListener('click', handleNouveauButtonClick)
+
+//Réactualise l'affichage
+function afficherConcepts() {
+    //On efface tous les li, pour ça
+    //On prend le ul, et on enleve tous ses enfants jusqu'a ce que 
+    //firstChild ne renvoi plus rien
+    while (listConcept.firstChild) {
+        listConcept.removeChild(listConcept.firstChild);
+    }    
+    for(const concept of concepts) {
+
+        //On crée un item dans la liste
+        const li = document.createElement('li')
+        li.classList.add("concept-list-item")
+        
+        const spanNom = document.createElement('span')
+        const spanScore = document.createElement('span')
+        const buttonVoteGauche = document.createElement('button')
+        const buttonVoteDroite = document.createElement('button')
+
+        buttonVoteGauche.innerText = "Gauche"
+        buttonVoteGauche.className = "button-vote"
+
+        buttonVoteDroite.innerText = "Droite"
+        buttonVoteDroite.className = "button-vote"
+
+
+        //On ajoute une fonction au bouton. 
+        buttonVoteGauche.addEventListener('click', function() {
+            plusdegauche(concept)
+        })
+
+        buttonVoteDroite.addEventListener('click' , function() {
+            plusdedroite(concept)
+        })
+
+        spanNom.innerText = concept.nom 
+        spanScore.innerText = concept.score
+        //On ajoute tous les sous composant dans le li
+        li.appendChild(spanNom)
+        li.appendChild(spanScore)
+        li.appendChild(buttonVoteGauche)
+        li.appendChild(buttonVoteDroite)
+        // on ajoute le li au ul
+        listConcept.appendChild(li)
+
+        if (concept.score < 0) {
+            spanNom.style.color = "blue";
+        } else spanNom.style.color ="red"; 
     }
-    return false 
 }
 
-function displayList() {
-    // 1 => initialisation, on declare i qui vaut 0
-    // 2 => condition de fin, on arrete lorsque i n'est plus plus petit que la longueur du tableau
-    // 3 => i avance de 1 en 1, i++ peut se lire i = i+1
-    for (var i = 0; i < concepts.length; i++) {
-        console.log(concepts[i])
-    }
+function handleNouveauButtonClick() {
+    //On lit la valeur de l'iput newConceptInput
+    //La valeur correspond au text dans l'input
+    const nom = newConceptInput.value
+    conceptRepository.
+    concepts.push({
+        nom: nom,
+        score: 1
+    })
+    afficherConcepts()
 }
 
-//Si l'argument utilisé est "list"
-if (command === "list") {
-    displayList()
-
-// Si c'est autre chose
-} else {
-    //On recupere la valeur retournée par la fonction
-    var bilan = degauche(command)
-
-    //On vérifie le resultat de la fonction
-    if (bilan === true) {
-        console.log("de gauche")
-    } else {
-        console.log("de droite")
-    }
+function plusdegauche(concept) {
+    concept.score++
+    //On réactualise l'affichage
+    afficherConcepts()
 }
 
-console.log(concepts)
+function plusdedroite(concept) {
+    concept.score--
+    afficherConcepts()
+}
 
+afficherConcepts()

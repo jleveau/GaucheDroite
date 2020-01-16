@@ -1,0 +1,10 @@
+.concept-list-item {
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.button-vote {
+
+}
