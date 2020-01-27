@@ -12,7 +12,7 @@ const ConceptModel = mongoose.model('Concept', {
 class ConceptRepository {
 
     create(concept) {
-        new ConceptModel({
+        return new ConceptModel({
             nom: concept.nom,
             score: concept.score
         }).save()
@@ -22,11 +22,11 @@ class ConceptRepository {
         return new Promise(resolve => {
             ConceptModel.find({
                 nom: nom
-            }).then((conceptsMongoose) => {
-                if (conceptsMongoose === null || conceptsMongoose.length === 0) {
+            }).then((conceptDocuments) => {
+                if (conceptDocuments === null || conceptDocuments.length === 0) {
                     resolve(null)
                 } else {
-                    resolve(conceptsMongoose[0])
+                    resolve(conceptDocuments[0])
                 }
             })       
         })
@@ -37,10 +37,10 @@ class ConceptRepository {
     }
 
     save(concept) {
-        this.findByNom(concept.nom).then(conceptMongoose => {
-            conceptMongoose.nom = concept.nom
-            conceptMongoose.score = concept.score
-            return conceptMongoose.save()
+        this.findByNom(concept.nom).then(conceptDocument => {
+            conceptDocument.nom = concept.nom
+            conceptDocument.score = concept.score
+            return conceptDocument.save()
         })
     }
 

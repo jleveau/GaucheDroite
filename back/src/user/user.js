@@ -1,18 +1,18 @@
-const Concept = require("../concept/concept")
 class User {
 
-    constructor(nom) {
+    constructor(nom, conceptsVoted = []) {
         this.nom = nom;
-        this.concepts = [];
+        this.conceptsVoted = conceptsVoted;
     }
 
     voteLeft(concept) {
         concept.left()
-        this.concepts.push(concept)
+        this.conceptsVoted.push(concept)
     }
+
     voteRight(concept) {
         concept.right()
-        this.concepts.push(concept)
+        this.conceptsVoted.push(concept)
     }
     
 }

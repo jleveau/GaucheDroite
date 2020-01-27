@@ -10,8 +10,12 @@ class ConceptService {
     }
 
     createConcept(nom) {
-        const concept = new Concept(nom, DEFAULT_SCORE)
-        return this.conceptRepository.create(concept)
+        return new Promise(resolve => {
+            const concept = new Concept(nom, DEFAULT_SCORE)
+            this.conceptRepository.create(concept).then(() => {
+                resolve(concept)
+            })
+        })
     }
 
     findByNom(nom) {
