@@ -10,12 +10,6 @@ const UserService = require("./user/userService")
 // NotreBase -> Collections
 
 let conceptService = new ConceptService()
-let userService = new UserService()
+let userService = new UserService(conceptService)
 
-
-userService.voteLeft("Vincent")
-    // ici le then prend une fonction en parametre, cette fonction ne contient qu'une seule instruction
-    // On peut donc ne pas mettre d'accolade ni de return. La fonction return la valeur de retour de l'instruction seule
-    .then(() => userService.findAllUsers())
-    // la fonction en paramettre de then reçoit le resultat de findAllUsers()
-    .then((users) => console.log(users))
+userService.getNextConceptToVote("Vincent").then(concept => console.log(concept))

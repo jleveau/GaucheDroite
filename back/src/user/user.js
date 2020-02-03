@@ -2,17 +2,17 @@ class User {
 
     constructor(nom, conceptsVoted = []) {
         this.nom = nom;
-        this.conceptsVoted = conceptsVoted;
+        this.conceptsNameVoted = conceptsVoted;
     }
 
     voteLeft(concept) {
         concept.left()
-        this.conceptsVoted.push(concept)
+        this.conceptsNameVoted.push(concept.nom)
     }
 
     voteRight(concept) {
         concept.right()
-        this.conceptsVoted.push(concept)
+        this.conceptsNameVoted.push(concept.nom)
     }
     
 }

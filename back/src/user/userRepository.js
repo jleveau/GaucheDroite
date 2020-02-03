@@ -47,7 +47,7 @@ class UserRepository {
         // La fonction add, permet d'ajouter un element (pas de fonction push), la fonction has, permet de verifier la presence d'un element
         let userSeen = new Set()
         return UserModel.find({}).then(userDocuments => {
-            return userDocuments.filter((userDocument) => {
+            let documents = userDocuments.filter((userDocument) => {
                 if (userSeen.has(userDocument.nom)) {
                     return false
                 } else {
@@ -60,9 +60,9 @@ class UserRepository {
 
     //Sauvegarde un User tel que defini dans user.js, pour mettre à jour ses données.
     save(user) {
-        return Promise(resolve => {
+        return new Promise(resolve => {
             // On réutilise les fonctions écrites plus haut
-            this.findByNom(nom).then(userDocument => {
+            this.findByNom(user.nom).then(userDocument => {
                 userDocument.nom = user.nom;
                 userDocument.conceptsVoted = user.conceptsVoted
                 userDocument.save().then(() => {
