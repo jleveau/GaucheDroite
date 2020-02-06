@@ -7,10 +7,10 @@ class UserService {
     constructor(conceptService) {
         this.userRepository = new UserRepository()
         this.conceptService = conceptService
-        // this.selectNextVoteStrategy = firstElementStrategy
+        //this.selectNextVoteStrategy = firstElementStrategy
         // this.selectNextVoteStrategy = mostPopularStrategy    
-        // this.selectNextVoteStrategy = leastPopular
-        this.selectNextVoteStrategy = randomStrategy
+         this.selectNextVoteStrategy = leastPopular
+        //this.selectNextVoteStrategy = randomStrategy
     }
 
     // La fonction retourne la promesse de la création d'un User. 
@@ -142,15 +142,31 @@ function randomStrategy(concepts) {
 }
 
 function firstElementStrategy(concepts) {
+    return concepts[0];
 
-}
+} 
 
 function mostPopularStrategy(concepts) {
-
+    for(concept of concepts) {
+        for(let i=0; i<concepts.length; ++i) {
+            var max = Math.max(concepts[i].score);
+        } 
+        if (concept.score >= max) {
+             return concept
+        }  
+     }
 }
+        
 
 function leastPopular(concepts) {
-    
+    for(concept of concepts) {
+        for(let i=0; i<concepts.length; ++i) {
+            var min = Math.min(concepts[i].score);
+        } 
+        if (concept.score <= min) {
+            return concept
+        }  
+    }
 }
 
 
